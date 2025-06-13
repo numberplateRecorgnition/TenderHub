@@ -1,32 +1,4 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tenderhub"; // Use your database name
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch grouped counts
-$types = $conn->prepare("SELECT type, COUNT(*) AS total FROM tenders GROUP BY type");
-$types->execute();
-$types_result = $types->get_result();
-
-$issuers = $conn->prepare("SELECT issuer, COUNT(*) AS total FROM tenders GROUP BY issuer");
-$issuers->execute();
-$issuers_result = $issuers->get_result();
-
-$categories = $conn->prepare("SELECT category, COUNT(*) AS total FROM tenders GROUP BY category");
-$categories->execute();
-$categories_result = $categories->get_result();
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,36 +109,7 @@ $categories_result = $categories->get_result();
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style="vertical-align: top;">
-                <div style="column-count: 2; column-gap: 20px;">
-                  <?php while ($row = $types_result->fetch_assoc()): ?>
-                    <a href="tenders.php?type=<?= urlencode($row['type']) ?>" class="text-dark d-block mb-2">
-                      <?= htmlspecialchars($row['type']) ?> (<?= $row['total'] ?>)
-                    </a>
-                  <?php endwhile; ?>
-                </div>
-              </td>
-              <td style="vertical-align: top;">
-                <div style="column-count: 2; column-gap: 20px;">
-                  <?php while ($row = $issuers_result->fetch_assoc()): ?>
-                    <a href="tenders.php?issuer=<?= urlencode($row['issuer']) ?>" class="text-dark d-block mb-2">
-                      <?= htmlspecialchars($row['issuer']) ?> (<?= $row['total'] ?>)
-                    </a>
-                  <?php endwhile; ?>
-                </div>
-              </td>
-              <td style="vertical-align: top;">
-                <div style="column-count: 2; column-gap: 20px;">
-                  <?php while ($row = $categories_result->fetch_assoc()): ?>
-                    <a href="tenders.php?category=<?= urlencode($row['category']) ?>" class="text-dark d-block mb-2">
-                      <?= htmlspecialchars($row['category']) ?> (<?= $row['total'] ?>)
-                    </a>
-                  <?php endwhile; ?>
-                </div>
-              </td>
-              
-            </tr>
+           
           </tbody>
         </table>
       </div>
